@@ -1,4 +1,5 @@
-import snippet from 'tui-code-snippet';
+import forEach from 'tui-code-snippet/collection/forEach';
+import CustomEvents from 'tui-code-snippet/customEvents/customEvents';
 import { toInteger, clamp } from '@/util';
 import { keyCodes } from '@/consts';
 
@@ -37,13 +38,14 @@ class Range {
     this._useDecimal = options.useDecimal;
     this._absMax = this._min * -1 + this._max;
     this.realTimeEvent = options.realTimeEvent || false;
+    this._userInputTimer = null;
 
     this.eventHandler = {
       startChangingSlide: this._startChangingSlide.bind(this),
       stopChangingSlide: this._stopChangingSlide.bind(this),
       changeSlide: this._changeSlide.bind(this),
       changeSlideFinally: this._changeSlideFinally.bind(this),
-      changeInput: this._changeValueWithInput.bind(this, false),
+      changeInput: this._changeInput.bind(this),
       changeInputFinally: this._changeValueWithInput.bind(this, true),
       changeInputWithArrow: this._changeValueWithInputKeyEvent.bind(this),
     };
@@ -63,7 +65,7 @@ class Range {
     this._removeDragEvent();
     this._removeInputEvent();
     this.rangeElement.innerHTML = '';
-    snippet.forEach(this, (value, key) => {
+    forEach(this, (value, key) => {
       this[key] = null;
     });
   }
@@ -172,7 +174,7 @@ class Range {
   _addInputEvent() {
     if (this.rangeInputElement) {
       this.rangeInputElement.addEventListener('keydown', this.eventHandler.changeInputWithArrow);
-      this.rangeInputElement.addEventListener('keyup', this.eventHandler.changeInput);
+      this.rangeInputElement.addEventListener('keydown', this.eventHandler.changeInput);
       this.rangeInputElement.addEventListener('blur', this.eventHandler.changeInputFinally);
     }
   }
@@ -184,7 +186,7 @@ class Range {
   _removeInputEvent() {
     if (this.rangeInputElement) {
       this.rangeInputElement.removeEventListener('keydown', this.eventHandler.changeInputWithArrow);
-      this.rangeInputElement.removeEventListener('keyup', this.eventHandler.changeInput);
+      this.rangeInputElement.removeEventListener('keydown', this.eventHandler.changeInput);
       this.rangeInputElement.removeEventListener('blur', this.eventHandler.changeInputFinally);
     }
   }
@@ -233,6 +235,29 @@ class Range {
     return value;
   }
 
+  _changeInput(event) {
+    clearTimeout(this._userInputTimer);
+
+    const { keyCode } = event;
+    if (keyCode < keyCodes.DIGIT_0 || keyCode > keyCodes.DIGIT_9) {
+      event.preventDefault();
+
+      return;
+    }
+
+    this._userInputTimer = setTimeout(() => {
+      this._inputSetValue(event.target.value);
+    }, 350);
+  }
+
+  _inputSetValue(stringValue) {
+    let value = this._useDecimal ? Number(stringValue) : toInteger(stringValue);
+    value = clamp(value, this._min, this.max);
+
+    this.value = value;
+    this.fire('change', value, true);
+  }
+
   /**
    * change angle event
    * @param {boolean} isLast - Is last change
@@ -251,11 +276,7 @@ class Range {
     target.value = stringValue;
 
     if (!waitForChange) {
-      let value = this._useDecimal ? Number(stringValue) : toInteger(stringValue);
-      value = clamp(value, this._min, this.max);
-
-      this.value = value;
-      this.fire('change', value, isLast);
+      this._inputSetValue(stringValue);
     }
   }
 
@@ -364,6 +385,6 @@ class Range {
   }
 }
 
-snippet.CustomEvents.mixin(Range);
+CustomEvents.mixin(Range);
 
 export default Range;

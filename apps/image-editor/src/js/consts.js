@@ -1,7 +1,3 @@
-/**
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
- * @fileoverview Constants
- */
 import { keyMirror } from '@/util';
 
 /**
@@ -260,6 +256,8 @@ export const keyCodes = {
   ARROW_DOWN: 40,
   ARROW_UP: 38,
   SPACE: 32,
+  DIGIT_0: 48,
+  DIGIT_9: 57,
 };
 
 /**
