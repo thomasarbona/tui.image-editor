@@ -342,8 +342,8 @@ class Cropper extends Component {
     if (isNaN(mode)) {
       cropzone.set(mode ? this._getPresetPropertiesForCropSize(mode) : DEFAULT_OPTION);
     } else {
-      cropzone.x = mode.x;
-      cropzone.y = mode.y;
+      cropzone.top = mode.top;
+      cropzone.left = mode.left;
       cropzone.width = mode.width;
       cropzone.height = mode.height;
     }
