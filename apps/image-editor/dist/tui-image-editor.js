@@ -43660,12 +43660,18 @@ var Cropper = /*#__PURE__*/function (_Component) {
   }
   /**
    * Start cropping
+   * @param {Object} [option] parameters of drawing mode, it's available with 'FREE_DRAWING', 'LINE_DRAWING'
+   *  @param {Number} [option.width] brush width
+   *  @param {Number} [option.height] brush height
+   *  @param {Number} [option.left] brush left
+   *  @param {Number} [option.top] brush top
+   *  @param {String} [option.color] brush color
    */
 
 
   _createClass(Cropper, [{
     key: "start",
-    value: function start() {
+    value: function start(options) {
       if (this._cropzone) {
         return;
       }
@@ -43676,10 +43682,10 @@ var Cropper = /*#__PURE__*/function (_Component) {
         obj.evented = false;
       });
       this._cropzone = new cropzone(canvas, extend_default()({
-        left: 0,
-        top: 0,
-        width: 0.5,
-        height: 0.5,
+        left: options.left || 0,
+        top: options.top || 0,
+        width: options.width || 0.5,
+        height: options.height || 0.5,
         strokeWidth: 0,
         // {@link https://github.com/kangax/fabric.js/issues/2860}
         cornerSize: 10,
@@ -43946,8 +43952,8 @@ var Cropper = /*#__PURE__*/function (_Component) {
       if (isNaN(mode)) {
         cropzone.set(mode ? this._getPresetPropertiesForCropSize(mode) : DEFAULT_OPTION);
       } else {
-        cropzone.x = mode.x;
-        cropzone.y = mode.y;
+        cropzone.top = mode.top;
+        cropzone.left = mode.left;
         cropzone.width = mode.width;
         cropzone.height = mode.height;
       }
@@ -49963,6 +49969,9 @@ var Graphics = /*#__PURE__*/function () {
      * @param {String} mode Can be one of <I>'CROPPER', 'FREE_DRAWING', 'LINE', 'TEXT', 'SHAPE'</I>
      * @param {Object} [option] parameters of drawing mode, it's available with 'FREE_DRAWING', 'LINE_DRAWING'
      *  @param {Number} [option.width] brush width
+     *  @param {Number} [option.height] brush height
+     *  @param {Number} [option.left] brush left
+     *  @param {Number} [option.top] brush top
      *  @param {String} [option.color] brush color
      * @returns {boolean} true if success or false
      */
@@ -60788,6 +60797,9 @@ var ImageEditor = /*#__PURE__*/function () {
      * @param {String} mode Can be one of <I>'CROPPER', 'FREE_DRAWING', 'LINE_DRAWING', 'TEXT', 'SHAPE'</I>
      * @param {Object} [option] parameters of drawing mode, it's available with 'FREE_DRAWING', 'LINE_DRAWING'
      *  @param {Number} [option.width] brush width
+     *  @param {Number} [option.height] brush height
+     *  @param {Number} [option.top] brush top
+     *  @param {Number} [option.left] brush left
      *  @param {String} [option.color] brush color
      *  @param {Object} [option.arrowType] arrow decorate
      *    @param {string} [option.arrowType.tail] arrow decorate for tail. 'chevron' or 'triangle'
