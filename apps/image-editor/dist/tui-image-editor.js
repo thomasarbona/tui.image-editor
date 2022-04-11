@@ -100,10 +100,38 @@ module.exports = __webpack_require__(4963);
 
 /***/ }),
 
+/***/ 8828:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+module.exports = __webpack_require__(1025);
+
+/***/ }),
+
 /***/ 1734:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 module.exports = __webpack_require__(7820);
+
+/***/ }),
+
+/***/ 7870:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+module.exports = __webpack_require__(4194);
+
+/***/ }),
+
+/***/ 7601:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+module.exports = __webpack_require__(2854);
+
+/***/ }),
+
+/***/ 651:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+module.exports = __webpack_require__(2);
 
 /***/ }),
 
@@ -876,6 +904,23 @@ module.exports = function create(P, D) {
 
 /***/ }),
 
+/***/ 8724:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+__webpack_require__(7585);
+var path = __webpack_require__(7545);
+
+var Object = path.Object;
+
+var defineProperties = module.exports = function defineProperties(T, D) {
+  return Object.defineProperties(T, D);
+};
+
+if (Object.defineProperties.sham) defineProperties.sham = true;
+
+
+/***/ }),
+
 /***/ 3512:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
@@ -889,6 +934,45 @@ var defineProperty = module.exports = function defineProperty(it, key, desc) {
 };
 
 if (Object.defineProperty.sham) defineProperty.sham = true;
+
+
+/***/ }),
+
+/***/ 632:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+__webpack_require__(9189);
+var path = __webpack_require__(7545);
+
+var Object = path.Object;
+
+var getOwnPropertyDescriptor = module.exports = function getOwnPropertyDescriptor(it, key) {
+  return Object.getOwnPropertyDescriptor(it, key);
+};
+
+if (Object.getOwnPropertyDescriptor.sham) getOwnPropertyDescriptor.sham = true;
+
+
+/***/ }),
+
+/***/ 1056:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+__webpack_require__(2509);
+var path = __webpack_require__(7545);
+
+module.exports = path.Object.getOwnPropertyDescriptors;
+
+
+/***/ }),
+
+/***/ 2921:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+__webpack_require__(6187);
+var path = __webpack_require__(7545);
+
+module.exports = path.Object.getOwnPropertySymbols;
 
 
 /***/ }),
@@ -5457,6 +5541,23 @@ $({ target: 'Object', stat: true, sham: !DESCRIPTORS }, {
 
 /***/ }),
 
+/***/ 7585:
+/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
+
+var $ = __webpack_require__(3085);
+var DESCRIPTORS = __webpack_require__(69);
+var defineProperties = (__webpack_require__(1187).f);
+
+// `Object.defineProperties` method
+// https://tc39.es/ecma262/#sec-object.defineproperties
+// eslint-disable-next-line es/no-object-defineproperties -- safe
+$({ target: 'Object', stat: true, forced: Object.defineProperties !== defineProperties, sham: !DESCRIPTORS }, {
+  defineProperties: defineProperties
+});
+
+
+/***/ }),
+
 /***/ 297:
 /***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
 
@@ -5469,6 +5570,60 @@ var defineProperty = (__webpack_require__(2760).f);
 // eslint-disable-next-line es/no-object-defineproperty -- safe
 $({ target: 'Object', stat: true, forced: Object.defineProperty !== defineProperty, sham: !DESCRIPTORS }, {
   defineProperty: defineProperty
+});
+
+
+/***/ }),
+
+/***/ 9189:
+/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
+
+var $ = __webpack_require__(3085);
+var fails = __webpack_require__(6192);
+var toIndexedObject = __webpack_require__(101);
+var nativeGetOwnPropertyDescriptor = (__webpack_require__(5141).f);
+var DESCRIPTORS = __webpack_require__(69);
+
+var FAILS_ON_PRIMITIVES = fails(function () { nativeGetOwnPropertyDescriptor(1); });
+var FORCED = !DESCRIPTORS || FAILS_ON_PRIMITIVES;
+
+// `Object.getOwnPropertyDescriptor` method
+// https://tc39.es/ecma262/#sec-object.getownpropertydescriptor
+$({ target: 'Object', stat: true, forced: FORCED, sham: !DESCRIPTORS }, {
+  getOwnPropertyDescriptor: function getOwnPropertyDescriptor(it, key) {
+    return nativeGetOwnPropertyDescriptor(toIndexedObject(it), key);
+  }
+});
+
+
+/***/ }),
+
+/***/ 2509:
+/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
+
+var $ = __webpack_require__(3085);
+var DESCRIPTORS = __webpack_require__(69);
+var ownKeys = __webpack_require__(3011);
+var toIndexedObject = __webpack_require__(101);
+var getOwnPropertyDescriptorModule = __webpack_require__(5141);
+var createProperty = __webpack_require__(9361);
+
+// `Object.getOwnPropertyDescriptors` method
+// https://tc39.es/ecma262/#sec-object.getownpropertydescriptors
+$({ target: 'Object', stat: true, sham: !DESCRIPTORS }, {
+  getOwnPropertyDescriptors: function getOwnPropertyDescriptors(object) {
+    var O = toIndexedObject(object);
+    var getOwnPropertyDescriptor = getOwnPropertyDescriptorModule.f;
+    var keys = ownKeys(O);
+    var result = {};
+    var index = 0;
+    var key, descriptor;
+    while (keys.length > index) {
+      descriptor = getOwnPropertyDescriptor(O, key = keys[index++]);
+      if (descriptor !== undefined) createProperty(result, key, descriptor);
+    }
+    return result;
+  }
 });
 
 
@@ -8537,10 +8692,50 @@ module.exports = parent;
 
 /***/ }),
 
+/***/ 1025:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var parent = __webpack_require__(8724);
+
+module.exports = parent;
+
+
+/***/ }),
+
 /***/ 7820:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 var parent = __webpack_require__(3512);
+
+module.exports = parent;
+
+
+/***/ }),
+
+/***/ 4194:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var parent = __webpack_require__(632);
+
+module.exports = parent;
+
+
+/***/ }),
+
+/***/ 2854:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var parent = __webpack_require__(1056);
+
+module.exports = parent;
+
+
+/***/ }),
+
+/***/ 2:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+var parent = __webpack_require__(2921);
 
 module.exports = parent;
 
@@ -41619,6 +41814,24 @@ var map_default = /*#__PURE__*/__webpack_require__.n(map);
 // EXTERNAL MODULE: ../../node_modules/@babel/runtime-corejs3/core-js-stable/reflect/construct.js
 var construct = __webpack_require__(9146);
 var construct_default = /*#__PURE__*/__webpack_require__.n(construct);
+// EXTERNAL MODULE: ../../node_modules/@babel/runtime-corejs3/core-js-stable/object/keys.js
+var object_keys = __webpack_require__(2461);
+var keys_default = /*#__PURE__*/__webpack_require__.n(object_keys);
+// EXTERNAL MODULE: ../../node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-symbols.js
+var get_own_property_symbols = __webpack_require__(651);
+var get_own_property_symbols_default = /*#__PURE__*/__webpack_require__.n(get_own_property_symbols);
+// EXTERNAL MODULE: ../../node_modules/@babel/runtime-corejs3/core-js-stable/instance/filter.js
+var filter = __webpack_require__(381);
+var filter_default = /*#__PURE__*/__webpack_require__.n(filter);
+// EXTERNAL MODULE: ../../node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptor.js
+var get_own_property_descriptor = __webpack_require__(7870);
+var get_own_property_descriptor_default = /*#__PURE__*/__webpack_require__.n(get_own_property_descriptor);
+// EXTERNAL MODULE: ../../node_modules/@babel/runtime-corejs3/core-js-stable/object/get-own-property-descriptors.js
+var get_own_property_descriptors = __webpack_require__(7601);
+var get_own_property_descriptors_default = /*#__PURE__*/__webpack_require__.n(get_own_property_descriptors);
+// EXTERNAL MODULE: ../../node_modules/@babel/runtime-corejs3/core-js-stable/object/define-properties.js
+var define_properties = __webpack_require__(8828);
+var define_properties_default = /*#__PURE__*/__webpack_require__.n(define_properties);
 ;// CONCATENATED MODULE: ../../node_modules/@babel/runtime-corejs3/helpers/esm/assertThisInitialized.js
 function _assertThisInitialized(self) {
   if (self === void 0) {
@@ -41878,9 +42091,6 @@ var extend_default = /*#__PURE__*/__webpack_require__.n(extend);
 // EXTERNAL MODULE: ../../node_modules/@babel/runtime-corejs3/core-js-stable/parse-int.js
 var parse_int = __webpack_require__(6397);
 var parse_int_default = /*#__PURE__*/__webpack_require__.n(parse_int);
-// EXTERNAL MODULE: ../../node_modules/@babel/runtime-corejs3/core-js-stable/object/keys.js
-var keys = __webpack_require__(2461);
-var keys_default = /*#__PURE__*/__webpack_require__.n(keys);
 // EXTERNAL MODULE: ../../node_modules/tui-code-snippet/type/isUndefined.js
 var type_isUndefined = __webpack_require__(3929);
 var isUndefined_default = /*#__PURE__*/__webpack_require__.n(type_isUndefined);
@@ -43576,6 +43786,20 @@ var Cropzone = fabric.fabric.util.createClass(fabric.fabric.Rect,
 
 
 
+
+
+
+
+
+
+
+function ownKeys(object, enumerableOnly) { var keys = keys_default()(object); if ((get_own_property_symbols_default())) { var symbols = get_own_property_symbols_default()(object); enumerableOnly && (symbols = filter_default()(symbols).call(symbols, function (sym) { return get_own_property_descriptor_default()(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var _context8, _context9; var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? for_each_default()(_context8 = ownKeys(Object(source), !0)).call(_context8, function (key) { _defineProperty(target, key, source[key]); }) : (get_own_property_descriptors_default()) ? define_properties_default()(target, get_own_property_descriptors_default()(source)) : for_each_default()(_context9 = ownKeys(Object(source))).call(_context9, function (key) { define_property_default()(target, key, get_own_property_descriptor_default()(source, key)); }); } return target; }
+
+
+
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = construct_default()(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !(construct_default())) return false; if ((construct_default()).sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(construct_default()(Boolean, [], function () {})); return true; } catch (e) { return false; } }
@@ -43949,13 +44173,10 @@ var Cropper = /*#__PURE__*/function (_Component) {
       canvas.selection = false;
       canvas.remove(cropzone);
 
-      if (isNaN(mode)) {
+      if (!isNaN(mode)) {
         cropzone.set(mode ? this._getPresetPropertiesForCropSize(mode) : DEFAULT_OPTION);
       } else {
-        cropzone.top = mode.top;
-        cropzone.left = mode.left;
-        cropzone.width = mode.width;
-        cropzone.height = mode.height;
+        cropzone.set(_objectSpread({}, mode));
       }
 
       canvas.add(cropzone);
@@ -44199,9 +44420,6 @@ var CropperDrawingMode = /*#__PURE__*/function (_DrawingMode) {
 }(drawingMode);
 
 /* harmony default export */ var drawingMode_cropper = (CropperDrawingMode);
-// EXTERNAL MODULE: ../../node_modules/@babel/runtime-corejs3/core-js-stable/instance/filter.js
-var filter = __webpack_require__(381);
-var filter_default = /*#__PURE__*/__webpack_require__.n(filter);
 ;// CONCATENATED MODULE: ./src/js/extension/mask.js
 
 /**

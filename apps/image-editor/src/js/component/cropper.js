@@ -345,13 +345,12 @@ class Cropper extends Component {
     canvas.selection = false;
     canvas.remove(cropzone);
 
-    if (isNaN(mode)) {
+    if (!isNaN(mode)) {
       cropzone.set(mode ? this._getPresetPropertiesForCropSize(mode) : DEFAULT_OPTION);
     } else {
-      cropzone.top = mode.top;
-      cropzone.left = mode.left;
-      cropzone.width = mode.width;
-      cropzone.height = mode.height;
+      cropzone.set({
+        ...mode,
+      });
     }
 
     canvas.add(cropzone);
