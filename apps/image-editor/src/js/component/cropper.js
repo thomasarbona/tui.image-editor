@@ -69,8 +69,14 @@ class Cropper extends Component {
 
   /**
    * Start cropping
+   * @param {Object} [option] parameters of drawing mode, it's available with 'FREE_DRAWING', 'LINE_DRAWING'
+   *  @param {Number} [option.width] brush width
+   *  @param {Number} [option.height] brush height
+   *  @param {Number} [option.left] brush left
+   *  @param {Number} [option.top] brush top
+   *  @param {String} [option.color] brush color
    */
-  start() {
+  start(options) {
     if (this._cropzone) {
       return;
     }
@@ -85,10 +91,10 @@ class Cropper extends Component {
       canvas,
       extend(
         {
-          left: 0,
-          top: 0,
-          width: 0.5,
-          height: 0.5,
+          left: options.left || 0,
+          top: options.top || 0,
+          width: options.width || 0.5,
+          height: options.height || 0.5,
           strokeWidth: 0, // {@link https://github.com/kangax/fabric.js/issues/2860}
           cornerSize: 10,
           cornerColor: 'black',

@@ -778,6 +778,9 @@ class ImageEditor {
    * @param {String} mode Can be one of <I>'CROPPER', 'FREE_DRAWING', 'LINE_DRAWING', 'TEXT', 'SHAPE'</I>
    * @param {Object} [option] parameters of drawing mode, it's available with 'FREE_DRAWING', 'LINE_DRAWING'
    *  @param {Number} [option.width] brush width
+   *  @param {Number} [option.height] brush height
+   *  @param {Number} [option.top] brush top
+   *  @param {Number} [option.left] brush left
    *  @param {String} [option.color] brush color
    *  @param {Object} [option.arrowType] arrow decorate
    *    @param {string} [option.arrowType.tail] arrow decorate for tail. 'chevron' or 'triangle'

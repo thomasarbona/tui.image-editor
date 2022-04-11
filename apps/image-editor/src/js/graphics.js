@@ -417,6 +417,9 @@ class Graphics {
    * @param {String} mode Can be one of <I>'CROPPER', 'FREE_DRAWING', 'LINE', 'TEXT', 'SHAPE'</I>
    * @param {Object} [option] parameters of drawing mode, it's available with 'FREE_DRAWING', 'LINE_DRAWING'
    *  @param {Number} [option.width] brush width
+   *  @param {Number} [option.height] brush height
+   *  @param {Number} [option.left] brush left
+   *  @param {Number} [option.top] brush top
    *  @param {String} [option.color] brush color
    * @returns {boolean} true if success or false
    */
