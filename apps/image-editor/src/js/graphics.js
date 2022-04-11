@@ -1,42 +1,42 @@
-import { fabric } from 'fabric';
+import Cropper from '@/component/cropper';
+import CropperDrawingMode from '@/drawingMode/cropper';
+import CustomEvents from 'tui-code-snippet/customEvents/customEvents';
+import Filter from '@/component/filter';
+import Flip from '@/component/flip';
+import FreeDrawing from '@/component/freeDrawing';
+import FreeDrawingMode from '@/drawingMode/freeDrawing';
+import Icon from '@/component/icon';
+import IconDrawingMode from '@/drawingMode/icon';
+import ImageLoader from '@/component/imageLoader';
+import Line from '@/component/line';
+import LineDrawingMode from '@/drawingMode/lineDrawing';
+import Resize from '@/component/resize';
+import ResizeDrawingMode from '@/drawingMode/resize';
+import Rotation from '@/component/rotation';
+import Shape from '@/component/shape';
+import ShapeDrawingMode from '@/drawingMode/shape';
+import Text from '@/component/text';
+import TextDrawingMode from '@/drawingMode/text';
+import Zoom from '@/component/zoom';
+import ZoomDrawingMode from '@/drawingMode/zoom';
 import extend from 'tui-code-snippet/object/extend';
-import isArray from 'tui-code-snippet/type/isArray';
-import isString from 'tui-code-snippet/type/isString';
 import forEachArray from 'tui-code-snippet/collection/forEachArray';
 import forEachOwnProperties from 'tui-code-snippet/collection/forEachOwnProperties';
-import CustomEvents from 'tui-code-snippet/customEvents/customEvents';
-import ImageLoader from '@/component/imageLoader';
-import Cropper from '@/component/cropper';
-import Flip from '@/component/flip';
-import Rotation from '@/component/rotation';
-import FreeDrawing from '@/component/freeDrawing';
-import Line from '@/component/line';
-import Text from '@/component/text';
-import Icon from '@/component/icon';
-import Filter from '@/component/filter';
-import Shape from '@/component/shape';
-import Zoom from '@/component/zoom';
-import CropperDrawingMode from '@/drawingMode/cropper';
-import FreeDrawingMode from '@/drawingMode/freeDrawing';
-import LineDrawingMode from '@/drawingMode/lineDrawing';
-import ShapeDrawingMode from '@/drawingMode/shape';
-import TextDrawingMode from '@/drawingMode/text';
-import IconDrawingMode from '@/drawingMode/icon';
-import ZoomDrawingMode from '@/drawingMode/zoom';
+import isArray from 'tui-code-snippet/type/isArray';
+import isString from 'tui-code-snippet/type/isString';
+import {
+  componentNames as components,
+  drawingModes,
+  eventNames as events,
+  fObjectOptions,
+} from '@/consts';
+import { fabric } from 'fabric';
+import { getProperties, includes, isShape, stamp } from '@/util';
 import {
   makeSelectionUndoData,
   makeSelectionUndoDatum,
   setCachedUndoDataForDimension,
 } from '@/helper/selectionModifyHelper';
-import { getProperties, includes, isShape, stamp } from '@/util';
-import {
-  componentNames as components,
-  eventNames as events,
-  drawingModes,
-  fObjectOptions,
-} from '@/consts';
-import Resize from '@/component/resize';
-import ResizeDrawingMode from '@/drawingMode/resize';
 
 const DEFAULT_CSS_MAX_WIDTH = 1000;
 const DEFAULT_CSS_MAX_HEIGHT = 800;
@@ -710,7 +710,7 @@ class Graphics {
 
   /**
    * Get cropped rect
-   * @param {number} [mode] cropzone rect mode
+   * @param {number|object} [mode] cropzone rect mode
    */
   setCropzoneRect(mode) {
     this.getComponent(components.CROPPER).setCropzoneRect(mode);

@@ -64,6 +64,3 @@ api
 *.vim
 .\#*
 .vscode
-
-dist
-!_*/dist/

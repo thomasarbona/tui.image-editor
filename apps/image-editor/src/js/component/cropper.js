@@ -1,9 +1,9 @@
-import { fabric } from 'fabric';
-import extend from 'tui-code-snippet/object/extend';
 import Component from '@/interface/component';
 import Cropzone from '@/extension/cropzone';
-import { keyCodes, componentNames, CROPZONE_DEFAULT_OPTIONS } from '@/consts';
+import extend from 'tui-code-snippet/object/extend';
+import { CROPZONE_DEFAULT_OPTIONS, componentNames, keyCodes } from '@/consts';
 import { clamp, fixFloatingPoint } from '@/util';
+import { fabric } from 'fabric';
 
 const MOUSE_MOVE_THRESHOLD = 10;
 const DEFAULT_OPTION = {
@@ -329,9 +329,9 @@ class Cropper extends Component {
 
   /**
    * Set a cropzone square
-   * @param {number} [presetRatio] - preset ratio
+   * @param {number|object} [presetRatio] - preset ratio
    */
-  setCropzoneRect(presetRatio) {
+  setCropzoneRect(mode) {
     const canvas = this.getCanvas();
     const cropzone = this._cropzone;
 
@@ -339,12 +339,19 @@ class Cropper extends Component {
     canvas.selection = false;
     canvas.remove(cropzone);
 
-    cropzone.set(presetRatio ? this._getPresetPropertiesForCropSize(presetRatio) : DEFAULT_OPTION);
+    if (isNaN(mode)) {
+      cropzone.set(mode ? this._getPresetPropertiesForCropSize(mode) : DEFAULT_OPTION);
+    } else {
+      cropzone.x = mode.x;
+      cropzone.y = mode.y;
+      cropzone.width = mode.width;
+      cropzone.height = mode.height;
+    }
 
     canvas.add(cropzone);
     canvas.selection = true;
 
-    if (presetRatio) {
+    if (mode) {
       canvas.setActiveObject(cropzone);
     }
   }

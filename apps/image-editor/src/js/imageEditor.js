@@ -1,22 +1,22 @@
-import { fabric } from 'fabric';
-import extend from 'tui-code-snippet/object/extend';
-import isUndefined from 'tui-code-snippet/type/isUndefined';
-import forEach from 'tui-code-snippet/collection/forEach';
 import CustomEvents from 'tui-code-snippet/customEvents/customEvents';
+import Graphics from '@/graphics';
 import Invoker from '@/invoker';
 import UI from '@/ui';
 import action from '@/action';
 import commandFactory from '@/factory/command';
-import Graphics from '@/graphics';
-import { makeSelectionUndoData, makeSelectionUndoDatum } from '@/helper/selectionModifyHelper';
-import { sendHostName, getObjectType } from '@/util';
+import extend from 'tui-code-snippet/object/extend';
+import forEach from 'tui-code-snippet/collection/forEach';
+import isUndefined from 'tui-code-snippet/type/isUndefined';
 import {
-  eventNames as events,
+  OBJ_TYPE,
   commandNames as commands,
+  eventNames as events,
   keyCodes,
   rejectMessages,
-  OBJ_TYPE,
 } from '@/consts';
+import { fabric } from 'fabric';
+import { getObjectType, sendHostName } from '@/util';
+import { makeSelectionUndoData, makeSelectionUndoDatum } from '@/helper/selectionModifyHelper';
 
 const {
   MOUSE_DOWN,
@@ -840,7 +840,7 @@ class ImageEditor {
 
   /**
    * Set the cropping rect
-   * @param {number} [mode] crop rect mode [1, 1.5, 1.3333333333333333, 1.25, 1.7777777777777777]
+   * @param {number|object} [mode] crop rect mode [1, 1.5, 1.3333333333333333, 1.25, 1.7777777777777777]
    */
   setCropzoneRect(mode) {
     this._graphics.setCropzoneRect(mode);
